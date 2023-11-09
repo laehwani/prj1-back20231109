@@ -52,5 +52,6 @@ public class BoardController {
          return ResponseEntity.internalServerError().build();
       }
    }
+   // 노트북 수정중
 }
 
