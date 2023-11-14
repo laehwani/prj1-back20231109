@@ -29,7 +29,6 @@ public class MemberController {
       } else {
          return ResponseEntity.badRequest().build();
       }
-      service.add(member);
    }
 
    @GetMapping(value = "check", params = "id")
