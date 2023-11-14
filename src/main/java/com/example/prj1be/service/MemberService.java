@@ -1,5 +1,4 @@
 package com.example.prj1be.service;
-
 import com.example.prj1be.domain.Member;
 import com.example.prj1be.mapper.MemberMapper;
 import java.util.List;
@@ -43,4 +42,4 @@ public class MemberService {
    public List<Member> list() {
       return mapper.selectAll();
    }
-   }
+}

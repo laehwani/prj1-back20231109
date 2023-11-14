@@ -1,5 +1,4 @@
 package com.example.prj1be.mapper;
-
 import com.example.prj1be.domain.Member;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
