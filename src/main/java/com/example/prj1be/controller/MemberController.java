@@ -18,8 +18,17 @@ public class MemberController {
    private final MemberService service;
 
    @PostMapping("signup")
-   public void signup(@RequestBody Member member) {
+   public ResponseEntity<Object> signup(@RequestBody Member member) {
 //      System.out.println("member = " + member);
+      if (service.validate(member)) {
+         if (service.add(member)) {
+            return ResponseEntity.ok().build();
+         } else {
+            return ResponseEntity.internalServerError().build();
+         }
+      } else {
+         return ResponseEntity.badRequest().build();
+      }
       service.add(member);
    }
 
