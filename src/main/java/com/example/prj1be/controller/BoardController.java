@@ -58,9 +58,17 @@ public class BoardController {
    // 프론트에서 넘어온 edit 정보를 받아야하니깐
    // @리퀘스트바디 애노테이션을 쓰자!
 
-   public void edit(@RequestBody Board board) {
+   public ResponseEntity edit(@RequestBody Board board) {
 //      System.out.println("board = " + board);
-      service.update(board);
+      if (service.validate(board)) {
+         if (service.update(board)) {
+            return ResponseEntity.ok().build();
+         } else {
+            return ResponseEntity.internalServerError().build();
+         }
+      } else {
+         return ResponseEntity.badRequest().build();
+      }
    }
 }
 
