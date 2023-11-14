@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,6 +53,14 @@ public class BoardController {
          return ResponseEntity.internalServerError().build();
       }
    }
-   // 노트북 수정중
+
+   @PutMapping("edit")
+   // 프론트에서 넘어온 edit 정보를 받아야하니깐
+   // @리퀘스트바디 애노테이션을 쓰자!
+
+   public void edit(@RequestBody Board board) {
+//      System.out.println("board = " + board);
+      service.update(board);
+   }
 }
 
