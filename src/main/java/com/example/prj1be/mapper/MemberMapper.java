@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface MemberMapper {
@@ -46,6 +47,16 @@ public interface MemberMapper {
       WHERE id= #{id}
       """)
    int deleteById(String id);
+
+   @Update("""
+      UPDATE member
+      SET password= #{password},
+      email= #{email}
+      WHERE id = #{id}
+      """)
+   int update(Member member);
+
+
 }
 
 
