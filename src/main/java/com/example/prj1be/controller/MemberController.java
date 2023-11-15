@@ -4,6 +4,7 @@ import com.example.prj1be.service.MemberService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,5 +59,17 @@ public class MemberController {
    public ResponseEntity<Member> view(String id) {
       Member member = service.getMember(id);
       return ResponseEntity.ok(member);
+   }
+
+   @DeleteMapping
+   public ResponseEntity delete(String id) {
+      // TODO: 로그인 했는지? -> 안했으면 401에러
+      // TODO: 자기 정보인지? -> 아니면 403 에러
+
+      if (service.deleteMember(id)) {
+         return ResponseEntity.ok().build();
+      } else {
+         return ResponseEntity.internalServerError().build();
+      }
    }
 }
