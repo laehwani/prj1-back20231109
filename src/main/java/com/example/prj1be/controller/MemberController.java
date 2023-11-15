@@ -53,4 +53,10 @@ public class MemberController {
    public List<Member> list() {
       return service.list();
    }
+
+   @GetMapping
+   public ResponseEntity<Member> view(String id) {
+      Member member = service.getMember(id);
+      return ResponseEntity.ok(member);
+   }
 }
