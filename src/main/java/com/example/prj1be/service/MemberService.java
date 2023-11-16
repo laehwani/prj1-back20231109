@@ -19,21 +19,25 @@ public class MemberService {
       return mapper.selectId(id);
    }
 
-   public String  getEmail(String email) {
+   public String getEmail(String email) {
       return mapper.selectEmail(email);
+
    }
 
    public boolean validate(Member member) {
       if (member == null) {
          return false;
       }
-      if (member.getId().isBlank()) {
+
+      if (member.getEmail().isBlank()) {
          return false;
       }
+
       if (member.getPassword().isBlank()) {
          return false;
       }
-      if (member.getEmail().isBlank()) {
+
+      if (member.getId().isBlank()) {
          return false;
       }
       return true;
@@ -44,21 +48,23 @@ public class MemberService {
    }
 
    public Member getMember(String id) {
-
       return mapper.selectById(id);
    }
+
 
    public boolean deleteMember(String id) {
       return mapper.deleteById(id) == 1;
    }
 
    public boolean update(Member member) {
-      Member oldMember = mapper.selectById(member.getId());
+        Member oldMember = mapper.selectById(member.getId());
 
-      if (member.getPassword().isEmpty()) {
-         member.setPassword(oldMember.getPassword());
-      }
+        if (member.getPassword().equals("")) {
+            member.setPassword(oldMember.getPassword());
+        }
 
       return mapper.update(member) == 1;
+
    }
 }
+
