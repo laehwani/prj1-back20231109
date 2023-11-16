@@ -11,8 +11,8 @@ import org.apache.ibatis.annotations.Update;
 public interface MemberMapper {
 
    @Insert("""
-        INSERT INTO member (id, password, email)
-        VALUES (#{id}, #{password}, #{email})
+        INSERT INTO member (id, password, email, nickName)
+        VALUES (#{id}, #{password}, #{email}, #{nickName})
         """)
    int insert(Member member);
 
@@ -29,7 +29,7 @@ public interface MemberMapper {
    String selectEmail(String email);
 
    @Select("""
-        SELECT id, password, email, inserted
+        SELECT id, password, email, nickName, inserted
         FROM member
         ORDER BY inserted DESC
         """)
@@ -47,16 +47,21 @@ public interface MemberMapper {
         WHERE id = #{id}
         """)
    int deleteById(String id);
-
    @Update("""
       UPDATE member
       SET password= #{password},
-      email= #{email}
+      email= #{email},
+      nickName = #{nickName}
       WHERE id = #{id}
       """)
    int update(Member member);
 
 
+   @Select("""
+        SELECT nickName FROM member
+        WHERE nickName = #{nickName}
+        """)
+   String selectNickName(String nickName);
 }
 
 

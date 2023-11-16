@@ -50,6 +50,14 @@ public class MemberController {
          return ResponseEntity.ok().build();
       }
    }
+   @GetMapping(value = "check", params = "nickName")
+   public ResponseEntity checkNickName(String nickName) {
+      if (service.getNickName(nickName) == null) {
+         return ResponseEntity.notFound().build();
+      } else {
+         return ResponseEntity.ok().build();
+      }
+   }
 
    @GetMapping("list")
    public List<Member> list() {
@@ -83,4 +91,5 @@ public class MemberController {
          return ResponseEntity.internalServerError().build();
       }
    }
+
 }
