@@ -53,7 +53,15 @@ public class BoardController {
    }
 
    @DeleteMapping("remove/{id}")
-   public ResponseEntity remove(@PathVariable Integer id) {
+   public ResponseEntity remove(@PathVariable Integer id,
+      @SessionAttribute(value = "login", required = false) Member login) {
+      if (login == null) {
+         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401 에러
+      }
+      if (!service.hasAccess(id, login)) {
+         return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 에러
+      }
+
       if (service.remove(id)) {
          return ResponseEntity.ok().build();
       } else {
@@ -77,5 +85,6 @@ public class BoardController {
          return ResponseEntity.badRequest().build();
       }
    }
+
 }
 
