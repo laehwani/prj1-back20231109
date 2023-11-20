@@ -1,8 +1,10 @@
 package com.example.prj1be.controller;
 import com.example.prj1be.domain.Member;
 import com.example.prj1be.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 
 @RequestMapping("/api/member")
 @RestController
@@ -50,6 +53,7 @@ public class MemberController {
          return ResponseEntity.ok().build();
       }
    }
+
    @GetMapping(value = "check", params = "nickName")
    public ResponseEntity checkNickName(String nickName) {
       if (service.getNickName(nickName) == null) {
@@ -92,4 +96,21 @@ public class MemberController {
       }
    }
 
+   @PostMapping("login")
+   public ResponseEntity login(@RequestBody Member member, WebRequest request) {
+
+      if (service.login(member, request)) {
+         return ResponseEntity.ok().build();
+      } else {
+         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      }
+   }
+
+   @PostMapping("logout")
+   public void logout(HttpSession session) {
+
+      if (service != null) {
+         session.invalidate();
+      }
+   }
 }
