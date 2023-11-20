@@ -83,7 +83,6 @@ public class MemberService {
 
       Member dbmember = mapper.selectById(member.getId());
 
-
       if (dbmember != null) {
          if (dbmember.getPassword().equals(member.getPassword())) {
             List<Auth> auth = mapper.selectAuthById(member.getId());
