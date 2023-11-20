@@ -62,6 +62,7 @@ public interface MemberMapper {
         WHERE nickName = #{nickName}
         """)
    String selectNickName(String nickName);
+
 }
 
 
