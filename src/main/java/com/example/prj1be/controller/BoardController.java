@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,12 +25,8 @@ public class BoardController {
    private final BoardService service;
 
    @PostMapping("add")
-   public ResponseEntity add(@RequestBody Board board, HttpSession session
+   public ResponseEntity add(@RequestBody Board board, @SessionAttribute(value = "login", required = false) Member login
    ) {
-      Object login = session.getAttribute("login");
-      Member loginmember = (Member) login;
-
-      System.out.println("loginmember = " + loginmember);
       System.out.println("login = " + login);
 
       if (!service.validate(board)) {
