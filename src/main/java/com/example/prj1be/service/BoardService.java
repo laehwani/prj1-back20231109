@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BoardService {
 
-
    private final BoardMapper mapper;
+   private final MemberService memberService;
 
    public boolean save(Board board, Member login) {
       board.setWriter(login.getId());
@@ -53,8 +53,21 @@ public class BoardService {
    }
 
    public boolean hasAccess(Integer id, Member login) {
+      if (memberService.isAdmin(login)) {
+         return true;
+      }
       Board board = mapper.selectById(id);
 
       return board.getWriter().equals(login.getId());
+   }
+   public boolean isAdmin(Member login) {
+      if (login.getAuth() != null) {
+
+         return login.getAuth()
+            .stream()
+            .map(e -> e.getName())
+            .anyMatch(n -> n.equals("admin"));
+      }
+      return false;
    }
 }
