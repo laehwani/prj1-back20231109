@@ -3,7 +3,6 @@ package com.example.prj1be.controller;
 import com.example.prj1be.domain.Board;
 import com.example.prj1be.domain.Member;
 import com.example.prj1be.service.BoardService;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -73,7 +72,17 @@ public class BoardController {
    // 프론트에서 넘어온 edit 정보를 받아야하니깐
    // @리퀘스트바디 애노테이션을 쓰자!
 
-   public ResponseEntity edit(@RequestBody Board board) {
+   public ResponseEntity edit(@RequestBody Board board,
+      @SessionAttribute(value = "login", required = false) Member login) {
+
+      if (login == null) {
+         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      }
+      if (!service.hasAccess(board.getId(), login)) {
+//         게시물의 아이디를 가리키는 것이라 board.getId() 를 썼다.
+         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+      }
+
 //      System.out.println("board = " + board);
       if (service.validate(board)) {
          if (service.update(board)) {
@@ -85,6 +94,6 @@ public class BoardController {
          return ResponseEntity.badRequest().build();
       }
    }
-
 }
+
 
