@@ -1,7 +1,9 @@
 package com.example.prj1be.controller;
 
 import com.example.prj1be.domain.Board;
+import com.example.prj1be.domain.Member;
 import com.example.prj1be.service.BoardService;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +24,14 @@ public class BoardController {
    private final BoardService service;
 
    @PostMapping("add")
-   public ResponseEntity<Object> add(@RequestBody Board board
-
+   public ResponseEntity add(@RequestBody Board board, HttpSession session
    ) {
+      Object login = session.getAttribute("login");
+      Member loginmember = (Member) login;
+
+      System.out.println("loginmember = " + loginmember);
+      System.out.println("login = " + login);
+
       if (!service.validate(board)) {
          return ResponseEntity.badRequest().build();
       }
