@@ -1,4 +1,5 @@
 package com.example.prj1be.mapper;
+import com.example.prj1be.domain.Auth;
 import com.example.prj1be.domain.Member;
 import java.util.List;
 import org.apache.ibatis.annotations.Delete;
@@ -63,6 +64,12 @@ public interface MemberMapper {
         """)
    String selectNickName(String nickName);
 
+   @Select("""
+      SELECT *
+      FROM auth
+      WHERE memberId = #{id}
+      """)
+   List<Auth> selectAuthById(String id);
 }
 
 

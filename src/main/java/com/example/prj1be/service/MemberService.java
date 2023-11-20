@@ -1,4 +1,5 @@
 package com.example.prj1be.service;
+import com.example.prj1be.domain.Auth;
 import com.example.prj1be.domain.Member;
 import com.example.prj1be.mapper.BoardMapper;
 import com.example.prj1be.mapper.MemberMapper;
@@ -82,8 +83,11 @@ public class MemberService {
 
       Member dbmember = mapper.selectById(member.getId());
 
+
       if (dbmember != null) {
          if (dbmember.getPassword().equals(member.getPassword())) {
+            List<Auth> auth = mapper.selectAuthById(member.getId());
+            dbmember.setAuth(auth);
             dbmember.setPassword("");
             request.setAttribute("login", dbmember, RequestAttributes.SCOPE_SESSION);
             return true;
