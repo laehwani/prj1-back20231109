@@ -1,0 +1,23 @@
+package com.example.prj1be.service;
+
+import com.example.prj1be.domain.Like;
+import com.example.prj1be.mapper.LikeMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class LikeService {
+
+   private final LikeMapper mapper;
+
+   public void update(Like like) {
+      // TODO : 메모용- 좋아요 기능을 처음 좋아요 누를 때 : insert , 다시 누르면 : delete 되게 만들자
+
+      int count = 0;
+      if (mapper.delete(like) == 0) {
+         count = mapper.insert(like);
+      }
+
+   }
+}
