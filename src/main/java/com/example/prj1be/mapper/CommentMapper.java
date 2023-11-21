@@ -18,9 +18,11 @@ public interface CommentMapper {
    int insert(Comment comment);
 
    @Select("""
-      SELECT *
-      FROM comment
-      WHERE boardId = #{boardId}
+         SELECT c.id, c.boardId, c.memberId, c.comment, m.nickName memberNickName ,c.inserted
+         FROM comment c
+         JOIN member m on m.id = c.memberId
+         WHERE boardId = #{boardId}
+         ORDER BY c.id DESC;
       """)
       // TODO: 지금 작성한 테이블의 컬럼명과 comment의 프로퍼티명이 같으니깐 그냥 셀렉트 별을 쓴다.
    List<Comment> selectByBoardId(Integer boardId);
