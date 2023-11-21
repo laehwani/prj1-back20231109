@@ -1,5 +1,6 @@
 package com.example.prj1be.service;
 import com.example.prj1be.domain.Auth;
+import com.example.prj1be.domain.Comment;
 import com.example.prj1be.domain.Member;
 import com.example.prj1be.mapper.BoardMapper;
 import com.example.prj1be.mapper.MemberMapper;

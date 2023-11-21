@@ -1,4 +1,5 @@
 package com.example.prj1be.controller;
+import com.example.prj1be.domain.Comment;
 import com.example.prj1be.domain.Member;
 import com.example.prj1be.service.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.context.request.WebRequest;
@@ -70,7 +72,8 @@ public class MemberController {
    }
 
    @GetMapping
-   public ResponseEntity<Member> view(String id, @SessionAttribute(value = "login", required = false) Member login) {
+   public ResponseEntity<Member> view(String id,
+      @SessionAttribute(value = "login", required = false) Member login) {
 
       if (login == null) {
          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -140,4 +143,5 @@ public class MemberController {
    public Member login(@SessionAttribute(value = "login", required = false) Member login) {
       return login;
    }
+
 }
