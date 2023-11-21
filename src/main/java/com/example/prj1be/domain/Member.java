@@ -14,4 +14,12 @@ public class Member {
    private LocalDateTime inserted;
    private List<Auth> auth;
 
+   public boolean isAdmin() {
+      if (auth != null) {
+         return auth.stream()
+            .map(a -> a.getName())
+            .anyMatch(n -> equals("admin"));
+      }
+      return false;
+   }
 }
