@@ -6,10 +6,13 @@ import com.example.prj1be.mapper.LikeMapper;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class LikeService {
+
    // TODO : 메모용- 좋아요 기능을 처음 좋아요 누를 때 : insert , 다시 누르면 : delete 되게 만들자
 
    private final LikeMapper mapper;

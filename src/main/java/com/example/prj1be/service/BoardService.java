@@ -7,14 +7,17 @@ import com.example.prj1be.mapper.CommentMapper;
 import com.example.prj1be.mapper.FileMapper;
 import com.example.prj1be.mapper.LikeMapper;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class BoardService {
 
    private final BoardMapper mapper;
@@ -22,7 +25,9 @@ public class BoardService {
    private final LikeMapper likeMapper;
    private final FileMapper fileMapper;
 
-   public boolean save(Board board, Member login, MultipartFile[] files) {
+   public boolean save(Board board, Member login, MultipartFile[] files) throws IOException {
+
+      //  TODO: 메모용- 우리 수준에서는 exception처리가 세부적으로 힘드므로 그냥 메소드단위로 던지자
 
       board.setWriter(login.getId());
 
@@ -34,12 +39,28 @@ public class BoardService {
             // boardId, name
             fileMapper.insert(board.getId(), files[i].getOriginalFilename());
 
-            // 실제 파일은 S3 bucket에 upload 하게..
+            // 실제 파일을 S3 bucket에 upload
+            // 일단 local에 저장
+            upload(board.getId(), files[i]);
          }
       }
       return cnt == 1;
    }
 
+   private void upload(Integer boardId, MultipartFile file) throws IOException {
+
+      // TODO: 파일 저장 경로 = C:\Temp\prj1\게시물번호\파일명
+      //  위에 경로는 임시용이니 원하는 저장경로로 할 것..
+
+      File folder = new File("C:\\Temp\\prj1\\" + boardId);
+      if (!folder.exists()) {
+         folder.mkdirs();
+      }
+
+      String path = folder.getAbsolutePath() + "\\" + file.getOriginalFilename();
+      File des = new File(path);
+      file.transferTo(des);
+   }
 
    public boolean validate(Board board) {
 

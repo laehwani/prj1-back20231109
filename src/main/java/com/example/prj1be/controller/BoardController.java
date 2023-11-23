@@ -3,6 +3,7 @@ package com.example.prj1be.controller;
 import com.example.prj1be.domain.Board;
 import com.example.prj1be.domain.Member;
 import com.example.prj1be.service.BoardService;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class BoardController {
    public ResponseEntity add(Board board,
       @RequestParam(value = "files[]", required = false) MultipartFile[] files,
       @SessionAttribute(value = "login", required = false) Member login
-   ) {
+   ) throws IOException {
       if (files != null) {
          for (int i = 0; i < files.length; i++) {
             System.out.println("file = " + files[i].getOriginalFilename());
