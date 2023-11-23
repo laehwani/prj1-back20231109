@@ -6,12 +6,12 @@ import com.example.prj1be.mapper.BoardMapper;
 import com.example.prj1be.mapper.CommentMapper;
 import com.example.prj1be.mapper.FileMapper;
 import com.example.prj1be.mapper.LikeMapper;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +19,7 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import sun.misc.Unsafe;
+
 
 @Service
 @RequiredArgsConstructor
@@ -32,9 +32,11 @@ public class BoardService {
    private final FileMapper fileMapper;
 
    private final S3Client s3;
-   @Value("${aw3.s3.bucket.name}")
-   private String bucket;
 
+   @Value("${image.file.prefix}")
+   private String urlPrefix;
+   @Value("${aws.s3.bucket.name}")
+   private String bucket;
 
    public boolean save(Board board, Member login, MultipartFile[] files) throws IOException {
 
@@ -114,7 +116,17 @@ public class BoardService {
    }
 
    public Board get(Integer id) {
-      return mapper.selectById(id);
+
+      Board board = mapper.selectById(id);
+
+      List<String> fileNames = fileMapper.selectNamesByBoardId(id);
+
+      fileNames = fileNames.stream()
+         .map(name -> urlPrefix + "prj1/" + id + "/" + name)
+         .toList();
+
+      board.setFileNames(fileNames);
+      return board;
    }
 
    public boolean remove(Integer id) {
