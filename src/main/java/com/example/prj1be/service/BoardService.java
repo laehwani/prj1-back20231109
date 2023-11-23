@@ -5,7 +5,8 @@ import com.example.prj1be.domain.Member;
 import com.example.prj1be.mapper.BoardMapper;
 import com.example.prj1be.mapper.CommentMapper;
 import com.example.prj1be.mapper.LikeMapper;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +39,23 @@ public class BoardService {
       return true;
    }
 
-   public List<Board> list() {
+   public Map<String, Object> list(Integer page) {
+      Map<String, Object> map = new HashMap<>();
+      Map<String, Object> pageInfo = new HashMap<>();
 
-      return mapper.selectAll();
+      int countAll = mapper.countAll();
+      int lastPageNumber = (countAll - 1) / 10 + 1;
+      int startPageNumber = (page - 1) / 10 * 10 + 1;
+      int endPageNumber = startPageNumber + 9;
+      endPageNumber = Math.min(endPageNumber, lastPageNumber);
+
+      pageInfo.put("startPageNumber", startPageNumber);
+      pageInfo.put("lastPageNumber", lastPageNumber);
+
+      int from = (page - 1) * 10;
+      map.put("boardList", mapper.selectAll(from));
+      map.put("pageInfo", pageInfo);
+      return map;
    }
 
    public Board get(Integer id) {
@@ -48,7 +63,7 @@ public class BoardService {
    }
 
    public boolean remove(Integer id) {
-      // 1. 게시물에 달린 댓글들 지우기
+      // 게시물에 달린 댓글들 지우기
       commentMapper.deleteByBoardId(id);
 
       // 좋아요 기록 지우기...
@@ -72,14 +87,5 @@ public class BoardService {
 
       return board.getWriter().equals(login.getId());
    }
-   public boolean isAdmin(Member login) {
-      if (login.getAuth() != null) {
 
-         return login.getAuth()
-            .stream()
-            .map(e -> e.getName())
-            .anyMatch(n -> n.equals("admin"));
-      }
-      return false;
-   }
 }

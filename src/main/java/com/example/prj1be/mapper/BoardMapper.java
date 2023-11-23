@@ -28,13 +28,15 @@ public interface BoardMapper {
           LEFT JOIN comment c on b.id = c.boardId
           LEFT JOIN boardLike l on b.id = l.boardId
       GROUP BY b.id
-      ORDER BY b.id DESC;
+      ORDER BY b.id DESC
+      LIMIT #{from}, 10
       """)
-   List<Board> selectAll();
+   List<Board> selectAll(Integer from);
 
    @Select("""
       SELECT b.id, b.title, b.content, b.writer, m.nickName, b.inserted
-      FROM board b JOIN member m ON b.writer = m.id
+      FROM board b 
+      JOIN member m ON b.writer = m.id
       WHERE b.id = #{id}
 
       """)
@@ -70,4 +72,10 @@ public interface BoardMapper {
       WHERE writer = #{id}
       """)
    List<Integer> selectIdListByMemberId(String writer);
+
+   @Select("""
+        SELECT COUNT(*) FROM board;
+        """)
+   int countAll();
+
 }
