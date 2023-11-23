@@ -21,11 +21,15 @@ public interface BoardMapper {
 
    @Select("""
       SELECT b.id, b.title, b.writer, m.nickName, b.inserted,
-      (SELECT COUNT(c.id) FROM comment c WHERE c.boardId = b.id) commentCount
-      FROM board b JOIN member m ON b.writer = m.id
-      ORDER BY b.id DESC
-           """)
-//   TODO: 보드게시판 출력정보는 스칼라 서브쿼리로 해봄...
+             COUNT(DISTINCT c.id) commentCount,
+             COUNT(DISTINCT l.id) countLike
+      FROM board b
+          JOIN member m ON b.writer = m.id
+          LEFT JOIN comment c on b.id = c.boardId
+          LEFT JOIN boardLike l on b.id = l.boardId
+      GROUP BY b.id
+      ORDER BY b.id DESC;
+      """)
    List<Board> selectAll();
 
    @Select("""
