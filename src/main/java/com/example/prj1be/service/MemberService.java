@@ -4,6 +4,7 @@ import com.example.prj1be.domain.Comment;
 import com.example.prj1be.domain.Member;
 import com.example.prj1be.mapper.BoardMapper;
 import com.example.prj1be.mapper.CommentMapper;
+import com.example.prj1be.mapper.LikeMapper;
 import com.example.prj1be.mapper.MemberMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class MemberService {
    private final BoardMapper boardMapper;
    private final CommentMapper commentMapper;
    private final BoardService boardService;
+   private final LikeMapper likeMapper;
 
    public boolean add(Member member) {
       return mapper.insert(member) == 1;
@@ -65,9 +67,11 @@ public class MemberService {
       // 이 회원이 탈퇴하기 전 작성한 댓글을 먼저 삭제
       commentMapper.deleteByMemberId(id);
 
-      // 1. 이 멤버가 작성한 게시물 삭제
+      // 좋아요 삭제
+      likeMapper.deleteByMemberId(id);
 
-      // 이 멤버가 작성한 게시물 번호들 조회
+      // 이 멤버가 작성한 게시물 삭제
+      //   이 멤버가 작성한 게시물 번호들 조회
       List<Integer> boardIdList = boardMapper.selectIdListByMemberId(id);
 
       // 게시물 번호를 반복, 각 게시물 삭제(boardService.remove)
