@@ -39,7 +39,7 @@ public class BoardService {
       return true;
    }
 
-   public Map<String, Object> list(Integer page) {
+   public Map<String, Object> list(Integer page, String keyword) {
       Map<String, Object> map = new HashMap<>();
       Map<String, Object> pageInfo = new HashMap<>();
 
@@ -62,7 +62,7 @@ public class BoardService {
       }
 
       int from = (page - 1) * 10;
-      map.put("boardList", mapper.selectAll(from));
+      map.put("boardList", mapper.selectAll(from, "%" + keyword + "%"));
       map.put("pageInfo", pageInfo);
       return map;
    }

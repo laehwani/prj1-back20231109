@@ -43,12 +43,16 @@ public class BoardController {
       }
    }
 
-   // api/board/list?p=6
+   // /api/board/list?p=6
+   // /api/board/list?k=java
+   // /api/board/list?p=7&k=java
    @GetMapping("list")
    public Map<String, Object> list(
-      @RequestParam(value = "p", defaultValue = "1") Integer page) {
+      @RequestParam(value = "p", defaultValue = "1") Integer page,
+      @RequestParam(value = "k", defaultValue = "") String keyword) {
 
-      return service.list(page);
+
+      return service.list(page, keyword);
    }
 
    @GetMapping("id/{id}")
