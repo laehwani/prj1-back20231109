@@ -5,17 +5,18 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface BoardMapper {
 
-
    @Insert("""
       INSERT INTO board(title, content, writer)
       VALUES (#{title}, #{content}, #{writer})
       """)
+   @Options(useGeneratedKeys = true, keyProperty = "id")
    Integer insert(Board board);
 
 
