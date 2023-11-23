@@ -15,8 +15,9 @@ public class Board {
    private LocalDateTime inserted;
    private Integer commentCount;
    private Integer countLike;
-
+//
    public String getAgo() {
       return AppUtil.getAgo(inserted, LocalDateTime.now());
    }
+
 }
