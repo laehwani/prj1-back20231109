@@ -4,6 +4,7 @@ import com.example.prj1be.domain.BoardFile;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface FileMapper {
@@ -14,5 +15,11 @@ public interface FileMapper {
         """)
    int insert(Integer boardId, String name);
 
-   List<BoardFile> selectNamesByBoardId(Integer id);
+   @Select("""
+        SELECT id, name
+        FROM boardFile
+        WHERE boardId = #{boardId}
+        """)
+   List<BoardFile> selectNamesByBoardId(Integer boardId);
 }
+
